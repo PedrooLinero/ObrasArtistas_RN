@@ -1,30 +1,26 @@
-import { Assets as NavigationAssets } from '@react-navigation/elements';
-import { Asset } from 'expo-asset';
-import * as SplashScreen from 'expo-splash-screen';
-import * as React from 'react';
-import { Navigation } from './navigation';
+import { NativeBaseProvider } from 'native-base';
+import { NavigationContainer } from '@react-navigation/native';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import "@/global.css";
+import { GluestackUIProvider } from "./../components/ui/gluestack-ui-provider";
+import {HomeScreen} from './navigation/screens/Home';
+import AltaScreen from './navigation/screens/Alta';
+import ListadoScreen from './navigation/screens/Listado';
 
-Asset.loadAsync([
-  ...NavigationAssets,
-  require('./assets/newspaper.png'),
-  require('./assets/bell.png'),
-]);
+const Drawer = createDrawerNavigator();
 
-SplashScreen.preventAutoHideAsync();
-
-export function App() {
+export default function App() {
   return (
-    <Navigation
-      linking={{
-        enabled: 'auto',
-        prefixes: [
-          // Change the scheme to match your app's scheme defined in app.json
-          'helloworld://',
-        ],
-      }}
-      onReady={() => {
-        SplashScreen.hideAsync();
-      }}
-    />
+    <NativeBaseProvider>
+      <GluestackUIProvider mode="light">
+        <NavigationContainer>
+          <Drawer.Navigator>
+            <Drawer.Screen name="Athenea Museum" component={HomeScreen} />
+            <Drawer.Screen name="Alta de Obras" component={AltaScreen} />
+            <Drawer.Screen name="Listado de Obras" component={ListadoScreen} />
+          </Drawer.Navigator>
+        </NavigationContainer>
+      </GluestackUIProvider>
+    </NativeBaseProvider>
   );
 }
